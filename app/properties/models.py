@@ -1,10 +1,6 @@
 from sqlalchemy import Integer, String, Numeric
-from sqlalchemy.orm import mapped_column, Mapped, relationship, DeclarativeBase
-from app.reservations.models import Reservations
-
-
-class Base(DeclarativeBase):
-    pass
+from sqlalchemy.orm import mapped_column, Mapped, relationship
+from ..db import Base
 
 
 class Properties(Base):

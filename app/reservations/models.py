@@ -1,11 +1,7 @@
 from datetime import date
 from sqlalchemy import Integer, String, Numeric, Date, ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship, DeclarativeBase
-from app.properties.models import Property
-
-
-class Base(DeclarativeBase):
-    pass
+from sqlalchemy.orm import mapped_column, Mapped, relationship
+from ..db import Base
 
 
 class Reservations(Base):
@@ -42,7 +38,7 @@ class Reservations(Base):
         nullable=False
     )
 
-    total_value = Mapped[float] = mapped_column(
+    total_value: Mapped[float] = mapped_column(
         Numeric(10, 2)
     )
 
@@ -51,6 +47,6 @@ class Reservations(Base):
         nullable=False
     )
 
-    property: Mapped["Property"] = relationship(
+    property: Mapped["Properties"] = relationship(
         back_populates="reservations"
     )

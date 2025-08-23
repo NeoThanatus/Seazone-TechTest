@@ -4,6 +4,7 @@ from sqlalchemy.future import select
 from . import models, schemas
 
 
+
 async def create_property(
         db: AsyncSession,
         property_: schemas.PropertyCreate):

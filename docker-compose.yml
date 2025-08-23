@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: seazone_db
+    restart: always
+    environment:
+      POSTGRES_USER: seazone_user
+      POSTGRES_PASSWORD: seazone_pass
+      POSTGRES_DB: seazone
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: seazone_app
+    restart: always
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+asyncpg://seazone_user:seazone_pass@db:5432/seazone
+
+volumes:
+  db_data:
