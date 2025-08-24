@@ -17,6 +17,9 @@ class PropertyBase(BaseModel):
 
 class PropertyCreate(PropertyBase):
     """Schema usado no POST /properties"""
+    title: str = Field(..., min_length=1)
+    address_street: str = Field(..., min_length=1)
+    price_per_night: float = Field(..., ge=0)
     pass
 
 
