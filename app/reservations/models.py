@@ -33,7 +33,7 @@ class Reservations(Base):
         nullable=False
     )
 
-    guest_quantity: Mapped[int] = mapped_column(
+    guests_quantity: Mapped[int] = mapped_column(
         Integer,
         nullable=False
     )

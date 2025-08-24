@@ -1,8 +1,9 @@
+from datetime import date
 from typing import Optional
+from ..reservations import models as reservation_models
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from . import models, schemas
-
 
 
 async def create_property(
@@ -43,6 +44,29 @@ async def get_property_by_id(
             models.Properties.property_id == property_id)
     )
     return result.scalars().first()
+
+
+async def get_available_properties(
+    db: AsyncSession,
+    start_date: date,
+    end_date: date
+):
+    subquery = (
+        select(reservation_models.Reservations.property_id)
+        .filter(
+            reservation_models.Reservations.start_date < end_date,
+            reservation_models.Reservations.end_date > start_date
+        )
+        .distinct()
+    )
+
+    query = (
+        select(models.Properties)
+        .filter(models.Properties.property_id.notin_(subquery))
+    )
+
+    result = await db.execute(query)
+    return result.scalars().all()
 
 
 async def filter_properties(

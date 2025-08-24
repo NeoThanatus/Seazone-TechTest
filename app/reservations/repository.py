@@ -6,15 +6,17 @@ from . import models, schemas
 
 async def create_reservation(
         db: AsyncSession,
-        reservation: schemas.ReservationCreate):
+        reservation: schemas.ReservationCreate,
+        total_value: float):
 
     db_reservation = models.Reservations(
         client_name=reservation.client_name,
         client_email=reservation.client_email,
         start_date=reservation.start_date,
         end_date=reservation.end_date,
-        guest_quantity=reservation.guest_quantity,
+        guests_quantity=reservation.guests_quantity,
         property_id=reservation.property_id,
+        total_value=total_value
     )
 
     db.add(db_reservation)
