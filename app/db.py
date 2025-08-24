@@ -1,3 +1,7 @@
+"""
+Configuração do banco de dados da aplicação.
+Define engine, sessão assíncrona, base declarativa e função utilitária para acesso ao banco.
+"""
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 import os

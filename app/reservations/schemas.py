@@ -4,6 +4,10 @@ from typing import Optional
 
 
 class ReservationBase(BaseModel):
+    """
+    Schema base para reservas.
+    Define campos comuns usados em criação, atualização e resposta.
+    """
     client_name: str = Field(..., max_length=255)
     client_email: EmailStr
     start_date: date
@@ -13,12 +17,18 @@ class ReservationBase(BaseModel):
 
 
 class ReservationCreate(ReservationBase):
-    """Schema usado no POST /reservation"""
+    """
+    Schema usado no POST /reservation.
+    Define campos obrigatórios para criação de uma reserva.
+    """
     pass
 
 
 class ReservationUpdate(BaseModel):
-    """Schema usado no PUT/PATCH /reservations/{id}"""
+    """
+    Schema usado no PUT/PATCH /reservations/{id}.
+    Permite atualização parcial dos campos da reserva.
+    """
     client_name: Optional[str] = None
     client_email: Optional[EmailStr] = None
     start_date: Optional[date] = None
@@ -27,7 +37,10 @@ class ReservationUpdate(BaseModel):
 
 
 class ReservationResponse(ReservationBase):
-    """Schema de retorno de uma reserva"""
+    """
+    Schema de retorno de uma reserva.
+    Inclui ID e valor total da reserva.
+    """
     reservation_id: int
     total_value: Optional[float] = None
 

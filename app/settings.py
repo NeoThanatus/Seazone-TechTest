@@ -1,3 +1,8 @@
+"""
+Configuração de variáveis de ambiente e settings globais da aplicação.
+Utiliza Pydantic para carregar dados do arquivo .env.
+"""
+
 from pydantic_settings import BaseSettings
 
 

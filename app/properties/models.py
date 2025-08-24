@@ -1,3 +1,7 @@
+"""
+Modelos ORM relacionados à tabela de propriedades.
+Define a estrutura da entidade Properties para persistência no banco de dados.
+"""
 from sqlalchemy import Integer, String, Numeric
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from ..db import Base

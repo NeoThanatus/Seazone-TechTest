@@ -1,3 +1,7 @@
+"""
+Funções de acesso e manipulação de dados das propriedades.
+Implementa operações CRUD e consultas relacionadas à entidade Properties.
+"""
 from datetime import date
 from typing import Optional
 from ..reservations import models as reservation_models
@@ -9,6 +13,14 @@ from . import models, schemas
 async def create_property(
         db: AsyncSession,
         property_: schemas.PropertyCreate):
+    """
+    Cria uma nova propriedade no banco de dados.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        property_: Dados da propriedade a ser criada.
+    Returns:
+        Instância da propriedade criada.
+    """
     db_property = models.Properties(
         title=property_.title,
         address_street=property_.address_street,
@@ -31,6 +43,15 @@ async def get_properties(
         db: AsyncSession,
         skip: int = 0,
         limit: int = 10):
+    """
+    Retorna uma lista de propriedades com paginação.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        skip: Número de registros a pular.
+        limit: Número máximo de registros a retornar.
+    Returns:
+        Lista de propriedades.
+    """
     result = await db.execute(
         select(models.Properties).offset(skip).limit(limit))
     return result.scalars().all()
@@ -39,6 +60,14 @@ async def get_properties(
 async def get_property_by_id(
         db: AsyncSession,
         property_id: int):
+    """
+    Busca uma propriedade pelo ID.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        property_id: ID da propriedade.
+    Returns:
+        Instância da propriedade ou None.
+    """
     result = await db.execute(
         select(models.Properties).filter(
             models.Properties.property_id == property_id)
@@ -51,6 +80,15 @@ async def get_available_properties(
     start_date: date,
     end_date: date
 ):
+    """
+    Retorna propriedades disponíveis para reserva em um intervalo de datas.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        start_date: Data inicial.
+        end_date: Data final.
+    Returns:
+        Lista de propriedades disponíveis.
+    """
     subquery = (
         select(reservation_models.Reservations.property_id)
         .filter(
@@ -77,6 +115,16 @@ async def filter_properties(
         state: Optional[str] = None,
         max_price: Optional[float] = None,
         min_capacity: Optional[int] = None):
+    """
+    Filtra propriedades por critérios como endereço, preço e capacidade.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        street, neighborhood, city, state: Filtros de localização.
+        max_price: Preço máximo por noite.
+        min_capacity: Capacidade mínima.
+    Returns:
+        Lista de propriedades filtradas.
+    """
     query = select(models.Properties)
     if street:
         query = query.filter(
@@ -105,6 +153,15 @@ async def update_property(
         db: AsyncSession,
         property_id: int,
         property_update: schemas.PropertyUpdate):
+    """
+    Atualiza os dados de uma propriedade existente.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        property_id: ID da propriedade.
+        property_update: Dados para atualização.
+    Returns:
+        Instância da propriedade atualizada ou None.
+    """
     db_property = await get_property_by_id(db, property_id)
     if not db_property:
         return None
@@ -120,6 +177,14 @@ async def update_property(
 async def delete_property(
         db: AsyncSession,
         property_id: int):
+    """
+    Remove uma propriedade do banco de dados.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        property_id: ID da propriedade.
+    Returns:
+        None se não encontrada, ou instância removida.
+    """
     db_property = await get_property_by_id(db, property_id)
     if not db_property:
         return None

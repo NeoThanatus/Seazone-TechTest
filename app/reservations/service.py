@@ -1,3 +1,7 @@
+"""
+Serviços e regras de negócio para reservas.
+Orquestra operações entre repositórios e schemas, aplicando validações e lógica de negócio.
+"""
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from . import repository, schemas
@@ -7,6 +11,14 @@ from ..properties import repository as properties_repo
 async def create_reservation_service(db: AsyncSession,
                                      reservation_in: schemas.ReservationCreate
                                      ):
+    """
+    Serviço para criar uma nova reserva.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        reservation_in: Dados da reserva a ser criada.
+    Returns:
+        Dados da reserva criada ou exceção HTTP.
+    """
     property_ = await properties_repo.get_property_by_id(
         db,
         reservation_in.property_id)
@@ -51,6 +63,15 @@ async def create_reservation_service(db: AsyncSession,
 async def list_reservations_service(db: AsyncSession,
                                     client_email: str | None = None,
                                     property_id: int | None = None):
+    """
+    Serviço para listar reservas filtrando por e-mail ou propriedade.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        client_email: E-mail do cliente (opcional).
+        property_id: ID da propriedade (opcional).
+    Returns:
+        Lista de reservas.
+    """
     if client_email:
         return await repository.get_reservation_by_email(db, client_email)
     if property_id:
@@ -59,6 +80,14 @@ async def list_reservations_service(db: AsyncSession,
 
 
 async def get_reservation_service(db: AsyncSession, reservation_id: int):
+    """
+    Serviço para buscar uma reserva pelo ID.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        reservation_id: ID da reserva.
+    Returns:
+        Instância da reserva ou exceção 404.
+    """
     res = await repository.get_reservation_by_id(db, reservation_id)
     if not res:
         raise HTTPException(status_code=404, detail="Reservation not found")
@@ -66,6 +95,14 @@ async def get_reservation_service(db: AsyncSession, reservation_id: int):
 
 
 async def cancel_reservation_service(db: AsyncSession, reservation_id: int):
+    """
+    Serviço para cancelar (remover) uma reserva.
+    Args:
+        db: Sessão assíncrona do banco de dados.
+        reservation_id: ID da reserva.
+    Returns:
+        Status de cancelamento ou exceção 404.
+    """
     deleted = await repository.delete_reservation(db, reservation_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Reservation not found")

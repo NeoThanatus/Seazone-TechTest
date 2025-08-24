@@ -1,3 +1,7 @@
+"""
+Modelos ORM relacionados à tabela de reservas.
+Define a estrutura da entidade Reservations para persistência no banco de dados.
+"""
 from datetime import date
 from sqlalchemy import Integer, String, Numeric, Date, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
