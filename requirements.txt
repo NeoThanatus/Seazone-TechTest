@@ -1,3 +1,5 @@
+pytest
+httpx
 alembic==1.16.4
 asyncpg>=0.27.0
 email_validator==2.2.0
@@ -12,3 +14,4 @@ python-multipart==0.0.20
 SQLAlchemy==2.0.43
 starlette==0.47.2
 uvicorn==0.35.0
+pytest-asyncio
