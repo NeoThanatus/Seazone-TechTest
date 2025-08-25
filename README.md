@@ -94,6 +94,75 @@ Consulte o arquivo `.env.example` para configurar as variáveis de ambiente nece
 
 ---
 
+## Exemplos de Requisições
+
+### Criar Propriedade
+**URL:**
+```
+POST /properties/
+```
+**JSON de entrada:**
+```json
+{
+	"title": "Casa do Capão",
+	"address_street": "Rua dos Racionais",
+	"address_number": "1",
+	"address_neighborhood": "Capão Redondo",
+	"address_city": "São Paulo",
+	"address_state": "SP",
+	"country": "BRA",
+	"rooms": 4,
+	"capacity": 8,
+	"price_per_night": 350.00
+}
+```
+**JSON de resposta:**
+```json
+{
+	"property_id": 1,
+	"title": "Casa do Capão",
+	"address_street": "Rua dos Racionais",
+	"address_number": "1",
+	"address_neighborhood": "Capão Redondo",
+	"address_city": "São Paulo",
+	"address_state": "SP",
+	"country": "BRA",
+	"rooms": 4,
+	"capacity": 8,
+	"price_per_night": 350.00
+}
+```
+
+### Criar Reserva
+**URL:**
+```
+POST /reservations/
+```
+**JSON de entrada:**
+```json
+{
+	"property_id": 1,
+	"client_name": "Emicida",
+	"client_email": "emicida@lab.com",
+	"start_date": "2024-12-10",
+	"end_date": "2024-12-15",
+	"guests_quantity": 4
+}
+```
+**JSON de resposta:**
+```json
+{
+	"reservation_id": 1,
+	"property_id": 1,
+	"client_name": "Emicida",
+	"client_email": "emicida@lab.com",
+	"start_date": "2024-12-10",
+	"end_date": "2024-12-15",
+	"guests_quantity": 4,
+	"total_price": 1400.00
+}
+```
+
 
 ## Observações
 - Para produção, remova o parâmetro `--reload` do Uvicorn.
@@ -114,74 +183,3 @@ Consulte o arquivo `.env.example` para configurar as variáveis de ambiente nece
 Se tiver dúvidas, consulte a documentação dos endpoints via Swagger ou Redoc.
 
 ---
-
-
-## Exemplos de Entrada, Saída e URLs
-
-### Criar Reserva (POST)
-**URL:**
-```
-POST /reservations/
-```
-**Exemplo de corpo da requisição:**
-```json
-{
-	"property_id": 1,
-	"guest_name": "Mano Brown",
-	"check_in": "2025-09-01",
-	"check_out": "2025-09-05",
-	"guests": 2
-}
-```
-**Exemplo de resposta:**
-```json
-{
-	"id": 10,
-	"property_id": 1,
-	"guest_name": "Mano Brown",
-	"check_in": "2025-09-01",
-	"check_out": "2025-09-05",
-	"guests": 2,
-	"total_price": 2000.0
-}
-```
-
-### Consultar Reserva (GET)
-**URL:**
-```
-GET /reservations/10
-```
-**Exemplo de resposta:**
-```json
-{
-	"id": 10,
-	"property_id": 1,
-	"guest_name": "Mano Brown",
-	"check_in": "2025-09-01",
-	"check_out": "2025-09-05",
-	"guests": 2,
-	"total_price": 2000.0
-}
-```
-
-### Exemplo de erro (saída)
-**URL:**
-```
-POST /reservations/
-```
-**Exemplo de corpo da requisição:**
-```json
-{
-	"property_id": 1,
-	"guest_name": "Emicida",
-	"check_in": "2025-09-01",
-	"check_out": "2025-09-05",
-	"guests": 20
-}
-```
-**Exemplo de resposta de erro:**
-```json
-{
-	"detail": "Capacidade máxima excedida para esta propriedade."
-}
-```
