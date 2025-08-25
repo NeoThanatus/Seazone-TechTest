@@ -25,10 +25,10 @@ Este projeto é um sistema de reservas de propriedades, desenvolvido com Python 
 	cd Seazone-TechTest
 	```
 2. Crie e ative o ambiente virtual:
-	 ```bash
-	 python3 -m venv venv
-	 source venv/bin/activate
-	 ```
+	```bash
+	python3.10 -m venv venv
+	source venv/bin/activate
+	```
 3. Instale as dependências:
 	 ```bash
 	 pip install -r requirements.txt
@@ -110,4 +110,78 @@ Consulte o arquivo `.env.example` para configurar as variáveis de ambiente nece
 - [httpx](https://www.python-httpx.org/)
 - [Docker](https://docs.docker.com/)
 
+
 Se tiver dúvidas, consulte a documentação dos endpoints via Swagger ou Redoc.
+
+---
+
+
+## Exemplos de Entrada, Saída e URLs
+
+### Criar Reserva (POST)
+**URL:**
+```
+POST /reservations/
+```
+**Exemplo de corpo da requisição:**
+```json
+{
+	"property_id": 1,
+	"guest_name": "Mano Brown",
+	"check_in": "2025-09-01",
+	"check_out": "2025-09-05",
+	"guests": 2
+}
+```
+**Exemplo de resposta:**
+```json
+{
+	"id": 10,
+	"property_id": 1,
+	"guest_name": "Mano Brown",
+	"check_in": "2025-09-01",
+	"check_out": "2025-09-05",
+	"guests": 2,
+	"total_price": 2000.0
+}
+```
+
+### Consultar Reserva (GET)
+**URL:**
+```
+GET /reservations/10
+```
+**Exemplo de resposta:**
+```json
+{
+	"id": 10,
+	"property_id": 1,
+	"guest_name": "Mano Brown",
+	"check_in": "2025-09-01",
+	"check_out": "2025-09-05",
+	"guests": 2,
+	"total_price": 2000.0
+}
+```
+
+### Exemplo de erro (saída)
+**URL:**
+```
+POST /reservations/
+```
+**Exemplo de corpo da requisição:**
+```json
+{
+	"property_id": 1,
+	"guest_name": "Emicida",
+	"check_in": "2025-09-01",
+	"check_out": "2025-09-05",
+	"guests": 20
+}
+```
+**Exemplo de resposta de erro:**
+```json
+{
+	"detail": "Capacidade máxima excedida para esta propriedade."
+}
+```
